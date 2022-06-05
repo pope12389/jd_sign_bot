@@ -25,6 +25,7 @@ async function changeFile () {
    if (DualKey) {
     content = content.replace(/var DualKey = ''/, `var DualKey = '${DualKey}'`);
    }
+   console.log('replace key',content);
    await fs.writeFileSync( './JD_DailyBonus.js', content, 'utf8')
 }
 
@@ -63,13 +64,17 @@ async function start() {
     if (fs.existsSync(path)) {
       content = fs.readFileSync(path, "utf8");
     }
+    console.log('result',content);
     let t = content.match(/【签到概览】:((.|\n)*)【签到奖励】/)
     let res = t ? t[1].replace(/\n/,'') : '失败'
     let t2 = content.match(/【签到奖励】:((.|\n)*)【其他奖励】/)
     let res2 = t2 ? t2[1].replace(/\n/,'') : '总计0'
-
+    console.log('total',res2);
+     console.log('fail',res); 
     
     await sendNotify("" + ` ${res2} ` + ` ${res} ` + new Date().toLocaleDateString(), content);
+  }else{
+   console.log('server error')   
   }
 }
 
